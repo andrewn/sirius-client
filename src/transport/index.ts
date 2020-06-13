@@ -1,5 +1,6 @@
 import Bluetooth, { BluetoothTransportConfiguration } from './bluetooth';
 import USB, { USBTransportConfiguration } from './usb';
+import TTL, { TTLTransportConfiguration } from './ttl';
 
 export interface TransportAdapter {
   connect(): Promise<void>;
@@ -10,7 +11,8 @@ export interface TransportAdapter {
 
 export type TransportConfiguration =
   | BluetoothTransportConfiguration
-  | USBTransportConfiguration;
+  | USBTransportConfiguration
+  | TTLTransportConfiguration;
 
 const makeTransportAdapter = (
   configuration: TransportConfiguration
@@ -20,6 +22,8 @@ const makeTransportAdapter = (
       return new USB(configuration.parameters);
     case 'bluetooth':
       return new Bluetooth(configuration.parameters);
+    case 'ttl':
+      return new TTL(configuration.parameters);
   }
 };
 
